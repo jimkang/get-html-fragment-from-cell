@@ -1,0 +1,29 @@
+{
+  "name": "@jimkang/get-html-fragment-from-cell",
+  "version": "1.0.0",
+  "description": "Given a [static-web-archive](https://github.com/jimkang/static-web-archive) cell, adds an HTML fragment to it that can be used to render it in HTML.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jimkang/get-html-fragment-from-cell.git"
+  },
+  "keywords": [
+    "DOM"
+  ],
+  "author": "Jim Kang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimkang/get-html-fragment-from-cell/issues"
+  },
+  "homepage": "https://github.com/jimkang/get-html-fragment-from-cell",
+  "dependencies": {
+    "call-next-tick": "^2.0.1"
+  },
+  "devDependencies": {
+    "tape": "^4.12.1",
+    "through-stream-testbed": "^1.0.0"
+  }
+}
