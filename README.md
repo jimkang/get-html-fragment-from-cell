@@ -28,7 +28,7 @@ Usage
       mediaFilename: 'pbDLD37qZWDBGBHW.mp4'
     };
 
-    const html = getHTMLFragmentFromCell('media', cell);
+    const html = getHTMLFragmentFromCell({ mediaDir: 'media' }, cell);
 
 See [static-web-archive](jimkang/static-web-archive) for stream usage.
 

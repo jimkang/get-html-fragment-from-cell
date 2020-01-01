@@ -4,14 +4,19 @@
 // optional: isVideo
 // optional: mediaFilenamA
 // mediaDir can be a full URL or just a relative path like 'media'.
-function getHTMLFragmentFromCell(mediaDir, cell) {
+// baseDir can be a full URL or just a relative path like 'blog' or it can
+// be an empty string, the entries should just link to the filename, without
+// any path preceding it.
+function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '' }, cell) {
+  var { mediaDir, baseDir } = opts;
   var cellDate = new Date(cell.date);
   var formattedDate = cellDate.toISOString();
   var readableDate = cellDate.toLocaleString();
+  const basePath = baseDir ? baseDir + '/' : '';
 
   var htmlFragment = `<li class="pane">
   <div class="time-stamp entry-meta">
-    <a href="${cell.id}.html">
+    <a href="${basePath}${cell.id}.html">
       <time datetime="${formattedDate}">${readableDate}</time>
     </a>
   </div>
