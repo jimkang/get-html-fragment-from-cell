@@ -1,3 +1,5 @@
+var sanitizeHtml = require('sanitize-html');
+
 // Expected from an incoming cell:
 // id
 // caption
@@ -26,9 +28,11 @@ function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '' }, cell
     if (cell.isVideo) {
       htmlFragment += `<video controls loop="true" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
     } else {
+      const altText = sanitizeHtml(cell.altText || cell.caption, { allowedTags: [], allowedAttributes: []});
+
       htmlFragment += `<img src="${mediaDir}/${
         cell.mediaFilename
-      }" alt="${cell.altText || cell.caption}"></img>\n`;
+      }" alt="${altText}"></img>\n`;
     }
     htmlFragment += `<div class="media-caption entry-meta">${cell.caption}</div>`;
   } else {

@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/jimkang/get-html-fragment-from-cell",
   "dependencies": {
-    "call-next-tick": "^2.0.1"
+    "call-next-tick": "^2.0.1",
+    "sanitize-html": "^1.21.1"
   },
   "devDependencies": {
     "tape": "^4.12.1",
