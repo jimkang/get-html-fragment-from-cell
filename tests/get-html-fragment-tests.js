@@ -3,7 +3,7 @@ var test = require('tape');
 var fs = require('fs');
 
 var lineBreakRegex = /\n/g;
-
+var spaceBetweenTagsRegex = />(\s+)</g;
 var getHTMLFragmentFromCell = require('../index');
 
 var smidgeoBuffer = fs.readFileSync(
@@ -62,7 +62,6 @@ var expectedFragments = [
 cells.forEach(runTest);
 
 function runTest(cell, i) {
-  console.log('cell', cell);
   test('getCell test', cellTest);
 
   function cellTest(t) {
@@ -73,11 +72,34 @@ function runTest(cell, i) {
     t.end();
 
     function checkHTMLFragment(t, fragment) {
+      console.log('fragment', fragment);
       t.equal(
-        fragment.replace(lineBreakRegex, ''),
-        expectedFragments[i].replace(lineBreakRegex, ''),
+        normalizeFragment(fragment),
+        normalizeFragment(expectedFragments[i]),
         'The html fragment is correct.'
       );
     }
   }
+}
+
+// How is finding and replacing capture groups not a
+// standard JS thing by now?
+function normalizeFragment(s) {
+  var withoutBreaks = s.replace(lineBreakRegex, '');
+  var normalized = '';
+  var startIndex = 0;
+  var endIndex;
+  var match;
+
+  while ((match = spaceBetweenTagsRegex.exec(withoutBreaks)) !== null) {
+    endIndex = match.index + 1;
+    normalized += withoutBreaks.slice(startIndex, endIndex);
+    startIndex = match.index + match[1].length + 1;
+  }
+
+  if (startIndex > 0) {
+    normalized += withoutBreaks.slice(startIndex);
+  }
+
+  return normalized;
 }
