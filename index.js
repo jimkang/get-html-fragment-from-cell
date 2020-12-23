@@ -4,7 +4,7 @@ var sanitizeHtml = require('sanitize-html');
 // id
 // caption
 // optional: isVideo
-// optional: mediaFilenamA
+// optional: mediaFilename
 // mediaDir can be a full URL or just a relative path like 'media'.
 // baseDir can be a full URL or just a relative path like 'blog' or it can
 // be an empty string, the entries should just link to the filename, without
