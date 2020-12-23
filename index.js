@@ -9,14 +9,14 @@ var sanitizeHtml = require('sanitize-html');
 // baseDir can be a full URL or just a relative path like 'blog' or it can
 // be an empty string, the entries should just link to the filename, without
 // any path preceding it.
-function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '' }, cell) {
+function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '', modFragmentFn: null }, cell) {
   var { mediaDir, baseDir } = opts;
   var cellDate = new Date(cell.date);
   var formattedDate = cellDate.toISOString();
   var readableDate = cellDate.toLocaleString();
   const basePath = baseDir ? baseDir + '/' : '';
 
-  var htmlFragment = `<li class="pane">
+  var innerFragment = `
   <div class="time-stamp entry-meta">
     <a href="${basePath}${cell.id}.html">
       <time datetime="${formattedDate}">${readableDate}</time>
@@ -26,22 +26,26 @@ function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '' }, cell
 
   if (cell.mediaFilename) {
     if (cell.isVideo) {
-      htmlFragment += `<video controls loop="true" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
+      innerFragment += `<video controls loop="true" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
     } else {
       const altText = sanitizeHtml(cell.altText || cell.caption, { allowedTags: [], allowedAttributes: []});
 
-      htmlFragment += `<img src="${mediaDir}/${
+      innerFragment += `<img src="${mediaDir}/${
         cell.mediaFilename
       }" alt="${altText}"></img>\n`;
     }
-    htmlFragment += `<div class="media-caption entry-meta">${cell.caption}</div>`;
+    innerFragment += `<div class="media-caption entry-meta">${cell.caption}</div>`;
   } else {
-    htmlFragment += `<div class="text-caption">${cell.caption}</div>\n`;
+    innerFragment += `<div class="text-caption">${cell.caption}</div>\n`;
   }
 
-  htmlFragment += '</li>';
+  if (opts.modFragmentFn) {
+    innerFragment = opts.modFragmentFn({ cell, innerFragment });
+  }
 
-  return htmlFragment;
+  return `<li class="pane">
+    ${innerFragment}
+  </li>`;
 }
 
 module.exports = getHTMLFragmentFromCell;
