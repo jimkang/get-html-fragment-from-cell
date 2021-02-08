@@ -28,9 +28,9 @@ function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '', modFra
 
   if (cell.mediaFilename) {
     if (cell.isVideo) {
-      innerFragment += `<video controls loop="false" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
+      innerFragment += `<video controls preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
     } else if (cell.isAudio) {
-      innerFragment += `<audio controls loop="false" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></audio>\n`;
+      innerFragment += `<audio controls preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></audio>\n`;
     } else {
       const altText = sanitizeHtml(cell.altText || cell.caption, { allowedTags: [], allowedAttributes: []});
 
