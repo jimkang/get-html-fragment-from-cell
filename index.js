@@ -4,6 +4,7 @@ var sanitizeHtml = require('sanitize-html');
 // id
 // caption
 // optional: isVideo
+// optional: isAudio
 // optional: mediaFilename
 // optional: modFragmentFn({ cell, innerFragment }): string
 // mediaDir can be a full URL or just a relative path like 'media'.
@@ -27,7 +28,9 @@ function getHTMLFragmentFromCell(opts = { mediaDir: 'media', baseDir: '', modFra
 
   if (cell.mediaFilename) {
     if (cell.isVideo) {
-      innerFragment += `<video controls loop="true" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
+      innerFragment += `<video controls loop="false" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></video>\n`;
+    } else if (cell.isAudio) {
+      innerFragment += `<audio controls loop="false" preload="metadata" src="${mediaDir}/${cell.mediaFilename}"></audio>\n`;
     } else {
       const altText = sanitizeHtml(cell.altText || cell.caption, { allowedTags: [], allowedAttributes: []});
 
