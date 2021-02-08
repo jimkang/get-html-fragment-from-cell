@@ -1,6 +1,6 @@
 {
   "name": "@jimkang/get-html-fragment-from-cell",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Given a [static-web-archive](https://github.com/jimkang/static-web-archive) cell, adds an HTML fragment to it that can be used to render it in HTML.",
   "main": "index.js",
   "scripts": {
