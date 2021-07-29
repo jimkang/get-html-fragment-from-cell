@@ -21,10 +21,10 @@
   "homepage": "https://github.com/jimkang/get-html-fragment-from-cell",
   "dependencies": {
     "call-next-tick": "^2.0.1",
-    "eslint": "^7.16.0",
-    "sanitize-html": "^1.21.1"
+    "sanitize-html": "^2.4.0"
   },
   "devDependencies": {
+    "eslint": "^7.31.0",
     "tape": "^4.13.3",
     "through-stream-testbed": "^1.0.0"
   }
