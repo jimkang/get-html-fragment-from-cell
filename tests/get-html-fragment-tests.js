@@ -1,9 +1,9 @@
 var test = require('tape');
-var cells = require('./fixtures/cells');
+var { cells, multimediaCells } = require('./fixtures/cells');
+var getHTMLFragmentFromCell = require('../index');
 
 var lineBreakRegex = /\n/g;
 var spaceBetweenTagsRegex = />(\s+)</g;
-var getHTMLFragmentFromCell = require('../index');
 
 var testCases = [
   {
@@ -32,7 +32,16 @@ var testCases = [
       '<li class="pane">  <div class="time-stamp entry-meta">    <a href="root/849617052130213888.html">      <time datetime="2017-04-05T13:37:45.000Z">4/5/2017, 9:37:45 AM</time>    </a>  </div>  <video controls preload="metadata" src="media/DPL17ys0-inDTwQW.mp4"></video><div class="media-caption entry-meta"></div><a href="https://smidgeo.com/thing/849617052130213888.html">Extra link</a></li>',
       '<li class="pane">  <div class="time-stamp entry-meta">    <a href="root/test-archive-image.html">      <time datetime="2019-04-05T13:38:28.000Z">4/5/2019, 9:38:28 AM</time>    </a>  </div>  <img src="media/smidgeo.jpg" alt="It is Smidgeo!"></img><div class="media-caption entry-meta">OK, I am testing a thing.      Here is more text with an image.</div><a href="https://smidgeo.com/thing/test-archive-image.html">Extra link</a></li>'
     ]
-  }
+  },
+  {
+    name: 'Multi-media-file fragments',
+    opts: { mediaDir: 'media', baseDir: 'root' },
+    cells: multimediaCells,
+    expectedFragments: [
+      '<li class="pane"><div class="time-stamp entry-meta"><a href="root/849617236574826497mm.html"><time datetime="2017-04-05T13:38:28.000Z">4/5/2017, 9:38:28 AM</time></a></div><video controls preload="metadata" src="media/pbDLD37qZWDBGBHW.mp4"></video><video controls preload="metadata" src="media/DPL17ys0-inDTwQW.mp4"></video><div class="media-caption entry-meta">Two videos</div></li>',
+      '<li class="pane"><div class="time-stamp entry-meta"><a href="root/test-archive-image.html"><time datetime="2019-04-05T13:38:28.000Z">4/5/2019, 9:38:28 AM</time></a></div><img src="media/smidgeo.jpg" alt="Smidgeo with tie"></img><video controls preload="metadata" src="media/smidgeo-promise.mp4"></video><img src="media/smallcatlabs.png" alt="It is Smidgeo!"></img><div class="media-caption entry-meta">OK, I am testing two things.      Here is more text with two images and a video.</div></li>'
+    ]
+  },
 ];
 
 testCases.forEach(runTestSet);
@@ -60,23 +69,5 @@ function runTestSet(testCase) {
 
 function normalizeFragment(s) {
   var withoutBreaks = s.replace(lineBreakRegex, '');
-
-  // How is finding and replacing capture groups not a
-  // standard JS thing by now?
-  var normalized = '';
-  var startIndex = 0;
-  var endIndex;
-  var match;
-
-  while ((match = spaceBetweenTagsRegex.exec(withoutBreaks)) !== null) {
-    endIndex = match.index + 1;
-    normalized += withoutBreaks.slice(startIndex, endIndex);
-    startIndex = match.index + match[1].length + 1;
-  }
-
-  if (startIndex > 0) {
-    normalized += withoutBreaks.slice(startIndex);
-  }
-
-  return normalized;
+  return withoutBreaks.replace(spaceBetweenTagsRegex, '><');
 }

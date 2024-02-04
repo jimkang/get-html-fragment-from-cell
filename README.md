@@ -18,19 +18,14 @@ Usage
       caption: 'Tv2',
       date: 'Wed Apr 05 13:38:28 +0000 2017',
       isVideo: true,
-      videoBufferInfo: {
-        bitrate: 832000,
-        content_type: 'video/mp4',
-        url:
-          'http://jimkang.com/static-web-archive/tests/fixtures/videos/pbDLD37qZWDBGBHW.mp4'
-      },
-      postedToGit: true,
       mediaFilename: 'pbDLD37qZWDBGBHW.mp4'
     };
 
     const html = getHTMLFragmentFromCell({ mediaDir: 'media' }, cell);
 
 See [static-web-archive](jimkang/static-web-archive) for stream usage.
+
+Other cell options listed at the top of [index.js](index.js);
 
 License
 -------
